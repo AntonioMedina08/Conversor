@@ -1,0 +1,51 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class ConversorDeMonedas {
+
+    private static Map<String, Double> tasasDeConversion;
+
+    public static void main(String[] args) {
+        inicializarTasasDeConversion();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Conversor de Monedas");
+        System.out.print("Ingrese la moneda de origen (por ejemplo, USD): ");
+        String monedaOrigen = scanner.nextLine().toUpperCase();
+        System.out.print("Ingrese la moneda de destino (por ejemplo, EUR): ");
+        String monedaDestino = scanner.nextLine().toUpperCase();
+        System.out.print("Ingrese la cantidad a convertir: ");
+        double cantidad = scanner.nextDouble();
+
+        convertirMoneda(monedaOrigen, monedaDestino, cantidad);
+
+        scanner.close();
+    }
+
+    private static void inicializarTasasDeConversion() {
+        tasasDeConversion = new HashMap<>();
+        // Tasa de conversión de ejemplo
+        tasasDeConversion.put("USD", 1.0);
+        tasasDeConversion.put("EUR", 0.85);
+        tasasDeConversion.put("GBP", 0.75);
+        tasasDeConversion.put("JPY", 110.0);
+        tasasDeConversion.put("MXN", 20.0);
+        // Agrega más monedas y tasas de conversión según sea necesario
+    }
+
+    private static void convertirMoneda(String monedaOrigen, String monedaDestino, double cantidad) {
+        if (!tasasDeConversion.containsKey(monedaOrigen) || !tasasDeConversion.containsKey(monedaDestino)) {
+            System.out.println("Moneda no soportada.");
+            return;
+        }
+
+        double tasaOrigen = tasasDeConversion.get(monedaOrigen);
+        double tasaDestino = tasasDeConversion.get(monedaDestino);
+
+        double cantidadEnUSD = cantidad / tasaOrigen; // Convertir a USD primero
+        double cantidadConvertida = cantidadEnUSD * tasaDestino; // Convertir de USD a moneda destino
+
+        System.out.printf("%.2f %s son %.2f %s\n", cantidad, monedaOrigen, cantidadConvertida, monedaDestino);
+    }
+}
